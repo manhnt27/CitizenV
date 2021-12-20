@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import './fonts/Roboto/Roboto-Bold.ttf';
+import './fonts/Roboto/Roboto-Medium.ttf';
 
 ReactDOM.render(
   <React.StrictMode>

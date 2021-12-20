@@ -19,15 +19,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Avatar, FormControlLabel } from '@mui/material';
 import { Checkbox, Switch, TextField } from '@mui/material';
-
+import { useState, useEffect } from 'react';
 import { deepOrange } from '@mui/material/colors';
-import { height } from '@mui/system';
+import TopMenu from './components/TopMenu';
 
 
 const headersData = [
  
   {
-    label: "Trang chủ",
+    label: "Trang chính",
     href: "/home",
   },
   {
@@ -48,41 +48,18 @@ const CreateAccount = () => {
 
   var accountList = new Array(4);
 
-  //Menu
-  const leftMenu = () => {
-    return headersData.map(({ label, href }) => {
-      return (
-        <Button
-          {...{
-            key: label,
-            color: "inherit",
-            to: href,
-            component: RouterLink,
-          }}
-        >
-          {label}
-        </Button>
-      );
-    });
-  };
-
-  const rightMenu = () => {
-    return (
-      <Avatar sx={{marginLeft: "auto", marginRight: 0, bgcolor: deepOrange[500]}}>A1</Avatar>
-      );
-  };
-
+  
   //Account table
   const accountTable = ()  => {
     return (
-      <TableContainer component={Paper} sx={{width: "30%", margin: "0 auto", marginTop: "40px"}}>
+      <TableContainer component={Paper} sx={{width: "60%", margin: "0 auto", marginTop: "40px"}}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>STT</TableCell>
               <TableCell align="center">Quận/Huyện</TableCell>
               <TableCell align="center">Mã tài khoản</TableCell>
-              
+              <TableCell align="center">Mật khẩu</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -96,7 +73,7 @@ const CreateAccount = () => {
                 </TableCell>
                 <TableCell align="center" >{row.district}</TableCell>
                 <TableCell align="center">{account(row.id - 1)}</TableCell>
-                
+                <TableCell align="center">{password(row.id - 1)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -109,6 +86,17 @@ const CreateAccount = () => {
   const account = (index) => {
     return (
       <input type="text" style={{  border: "none", height: 22, textAlign: "center" }}  placeholder="Chưa có mã tải khoản"
+        onChange={(event)  => {
+        accountList[index] = event.target.value;
+        console.log(accountList[index])
+        }}
+      />
+    )
+  }
+
+  const password = (index) => {
+    return (
+      <input type="text" style={{  border: "none", height: 22, textAlign: "center" }}  placeholder="Chưa có mật khẩu"
         onChange={(event)  => {
         accountList[index] = event.target.value;
         console.log(accountList[index])
@@ -133,13 +121,10 @@ const CreateAccount = () => {
   
   return (
     <div>
-      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        {leftMenu()}
-        {rightMenu()}
-      </Toolbar>
+      <TopMenu target="Cấp tài khoản" role="A1"></TopMenu>
       <div id="content">
         {accountTable()}
-        <Button  sx={{bgcolor: deepOrange[500], marginLeft: 90, marginTop: 5}} onClick={handleClick}>Lưu</Button>
+        <Button  sx={{bgcolor: deepOrange[500], marginLeft: 90, marginTop: 5, color: "black", fontWeight: "bold"}} onClick={handleClick}>Lưu</Button>
       </div>
     </div>
   );

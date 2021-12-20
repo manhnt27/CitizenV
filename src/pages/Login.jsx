@@ -68,11 +68,19 @@ export default function SignIn() {
               name="email"
               autoFocus
             />
-            
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Mật khẩu"
+              type="password"
+              id="password"
+              autoComplete="current-password"
             />
+            
+           
             <Button
               type="submit"
               fullWidth

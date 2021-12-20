@@ -19,41 +19,24 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { autocompleteClasses, Avatar, FormControlLabel } from '@mui/material';
 import { Checkbox, Switch, TextField } from '@mui/material';
-import { useState } from 'react';
-import { shape } from '@mui/system';
-import { deepOrange } from '@mui/material/colors';
-
-const headersData = [
-
-  {
-    label: "Trang chủ",
-    href: "/home",
-  },
-  {
-    label: "Cấp tài khoản",
-    href: "/createaccount",
-  },
-  {
-    label: "Mở khai báo",
-    href: "/assign",
-  },
-];
+import { useState, useEffect } from 'react';
+import TopMenu from './components/TopMenu';
 
 const Assign = () => {
   function createData(id, district, account, assign, startdate, enddate) {
     return { id, district, account, assign, startdate, enddate };
   }
 
-  const handleClick = (event) => {
-    console.log(event.state.isChecked);
-  }
+  
 
   const rows = [
     createData(1, "Ba Đình", "0405"),
     createData(2, "Ba Đình", "0405"),
     createData(3, "Ba Đình", "0405"),
     createData(4, "Ba Đình", "0405"),
-
+    createData(5, "Ba Đình", "0405"),
+    createData(6, "Ba Đình", "0405"),
+    
   ];
 
   const [isChecked, setIsChecked] = useState(
@@ -73,70 +56,45 @@ const Assign = () => {
   
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   
-  //Menu
-  const leftMenu = () => {
-    return headersData.map(({ label, href }) => {
+  
+
+  //Assignment table
+  const assignTable = () => {
       return (
-        
-        <Button
-          {...{
-            key: label,
-            color: "inherit",
-            to: href,
-            component: RouterLink,
-          }}
-        >
-          {label}
-        </Button>
-       
-      );
-    });
-  }
-
-const rightMenu = () => {
-    return (
-      <Avatar sx={{marginLeft: "auto", marginRight: 0, bgcolor: deepOrange[500]}}>A1</Avatar>
-      );
-  };
-
-
-//Assignment table
-const assignTable = () => {
-    return (
-      <TableContainer component={Paper} sx={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">STT</TableCell>
-              <TableCell align="center">Quận/Huyện</TableCell>
-              <TableCell align="right">Mã tài khoản</TableCell>
-              <TableCell align="right" >{topAssign()}</TableCell>
-              <TableCell align="left">{topStartDate(0)}</TableCell>
-              <TableCell align="left">{topEndDate(0)}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" align="center">
-                  {row.id}
-                </TableCell>
-
-                <TableCell align="center">{row.district}</TableCell>
-                <TableCell align="center">{row.account}</TableCell>
-                <TableCell align="center" >{belowAssign(row.id - 1)}</TableCell>
-                <TableCell align="center" >{belowStartDate(row.id)}</TableCell>
-                <TableCell align="center">{belowEndDate(row.id)}</TableCell>
+        <TableContainer component={Paper} sx={{ width: "80%", margin: "0 auto", marginTop: "40px", maxHeight: 400 }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">STT</TableCell>
+                <TableCell align="center">Quận/Huyện</TableCell>
+                <TableCell align="right">Mã tài khoản</TableCell>
+                <TableCell align="right" >{topAssign()}</TableCell>
+                <TableCell align="left">{topStartDate(0)}</TableCell>
+                <TableCell align="left">{topEndDate(0)}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  }
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row" align="center">
+                    {row.id}
+                  </TableCell>
+
+                  <TableCell align="center">{row.district}</TableCell>
+                  <TableCell align="center">{row.account}</TableCell>
+                  <TableCell align="center" >{belowAssign(row.id - 1)}</TableCell>
+                  <TableCell align="center" >{belowStartDate(row.id)}</TableCell>
+                  <TableCell align="center">{belowEndDate(row.id)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
+    }
 
 //Assign cell of table
 const topAssign = () => {
@@ -252,16 +210,15 @@ const belowEndDate = (index) => {
   );
 }
 
-return (
-  <div>
-    <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      {leftMenu()}
-      {rightMenu()}
-    </Toolbar>
-    <div id="content">
-      {assignTable()}
+  
+
+  return (
+    <div>
+      <TopMenu target="Mở khai báo" role="A1"></TopMenu>
+      <div id="content">
+        {assignTable()}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 export default Assign;
