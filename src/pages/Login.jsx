@@ -35,7 +35,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
+      code: data.get('code'),
       password: data.get('password'),
     });
   };
@@ -63,9 +63,9 @@ export default function SignIn() {
               margin="normal"
               fullWidth
               required
-              id="email"
+              id="code"
               label="Mã tài khoản"
-              name="email"
+              name="code"
               autoFocus
             />
 

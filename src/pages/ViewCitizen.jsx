@@ -1,6 +1,6 @@
 import * as React from 'react';
-import TopMenu from './components/TopMenu';
-import PaginationTable from './components/PaginationTable';
+import TopMenu from 'components/TopMenu';
+import PaginationTable from 'components/PaginationTable';
 
 const ViewCitizen = () => {
   return (

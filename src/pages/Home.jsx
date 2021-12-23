@@ -10,14 +10,11 @@ import { deepOrange } from '@mui/material/colors';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useState, useEffect } from 'react';
-import PopulationSection from './components/PopulationSection';
-import SpanningTable from './components/SpanningTable';
-import Chart from './components/Chart';
-import { Link as RouterLink } from "react-router-dom";
-import PaginationTable from './components/PaginationTable';
-import TopMenu from './components/TopMenu';
+import PopulationSection from 'components/PopulationSection';
+import SpanningTable from 'components/SpanningTable';
+import Chart from 'components/Chart';
+import TopMenu from 'components/TopMenu';
 
 const Home = () => {
   const cardView = () => {
@@ -34,8 +31,10 @@ const Home = () => {
     <div>
      <TopMenu target="Trang chính" role="A1" ></TopMenu>
     <div>
-      
-        <Typography variant='h5' sx={{marginTop: 2, marginLeft: 5, fontFamily: "RobotoMedium"}}>Dữ liệu dân số</Typography>
+        <div style={{marginTop: 20, marginLeft: 18}}>
+          <span style={{width: 10, height: 25, backgroundColor: "red", position: "absolute", marginTop: 4, marginLeft: 10}}></span>
+          <Typography variant='h5' sx={{ fontFamily: "RobotoMedium", paddingLeft: 3}}>Dữ liệu dân số</Typography>
+          </div>
         <div style={{marginTop: 10, marginLeft: 37}}>
           {PopulationSection()}
         </div>

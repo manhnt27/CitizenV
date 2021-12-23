@@ -1,15 +1,4 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import { makeStyles } from '@mui/styles';
-import MenuIcon from '@mui/icons-material/Menu';
-import { DataGrid } from '@mui/x-data-grid';
-import { Link as RouterLink } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,43 +9,53 @@ import Paper from '@mui/material/Paper';
 import { autocompleteClasses, Avatar, FormControlLabel } from '@mui/material';
 import { Checkbox, Switch, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
-import TopMenu from './components/TopMenu';
-
+import TopMenu from  'components/TopMenu';
+import axios from 'axios';
+import { Button } from '@mui/material';
+import { deepOrange } from '@mui/material/colors';
 const Assign = () => {
-  function createData(id, district, account, assign, startdate, enddate) {
-    return { id, district, account, assign, startdate, enddate };
+  function createData(code, district, assign, startdate, enddate) {
+    return { code, district, assign, startdate, enddate };
   }
 
-  
+  function createDat(code,  right_of_declaration, startdate, enddate) {
+    return { code,  right_of_declaration, startdate, enddate };
+  }
 
-  const rows = [
-    createData(1, "Ba Đình", "0405"),
-    createData(2, "Ba Đình", "0405"),
-    createData(3, "Ba Đình", "0405"),
-    createData(4, "Ba Đình", "0405"),
-    createData(5, "Ba Đình", "0405"),
-    createData(6, "Ba Đình", "0405"),
-    
-  ];
-
-  const [isChecked, setIsChecked] = useState(
-    new Array(4).fill(false)
-  );
-
-  const [start, setStart] = useState(
-    new Array(4).fill("")
-  );    
-  const [end, setEnd] = useState(
-    new Array(4).fill("")
-  );  
+  const [isChecked, setIsChecked] = useState([]);
+  const [start, setStart] = useState([]);
+  const [end, setEnd] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(
-    new Array(5).fill(true)
-  );
+  const [isDisabled, setIsDisabled] = useState([]);
   
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   
-  
+  const [numUnits, setNumUnits] = useState(0);
+  const [rows, setRows] = useState([]);
+  const [result, setResult] = useState([]);
+  useEffect(() => {
+    
+    axios.get('https://run.mocky.io/v3/ed434bbf-b5a4-4435-abfe-330ba7210e12')
+      .then(res => {
+        var units= res.data;
+        
+        setNumUnits(units.length);
+        for(var i = 0; i < numUnits; i++) {
+          rows[i] = createData(units[i].code, units[i].name);
+          result[i] = createDat(units[i].code, false, "", "");
+        }
+
+        setIsChecked(new Array(numUnits).fill(false));
+        setStart(new Array(numUnits + 1).fill(""));
+        setEnd(new Array(numUnits + 1).fill(""));
+        setIsDisabled(new Array(numUnits + 1).fill(true));
+        //console.log(rows);
+        setRows([...rows]);
+      })
+      
+    
+    
+  }, [numUnits]);
 
   //Assignment table
   const assignTable = () => {
@@ -65,29 +64,27 @@ const Assign = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align="center">STT</TableCell>
-                <TableCell align="center">Quận/Huyện</TableCell>
-                <TableCell align="right">Mã tài khoản</TableCell>
+                <TableCell align="center">Mã</TableCell>
+                <TableCell align="center">Tỉnh</TableCell>
                 <TableCell align="right" >{topAssign()}</TableCell>
                 <TableCell align="left">{topStartDate(0)}</TableCell>
                 <TableCell align="left">{topEndDate(0)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {rows.map((row, index) => (
                 <TableRow
-                  key={row.id}
+                  key={row.code}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row" align="center">
-                    {row.id}
+                    {row.code}
                   </TableCell>
 
                   <TableCell align="center">{row.district}</TableCell>
-                  <TableCell align="center">{row.account}</TableCell>
-                  <TableCell align="center" >{belowAssign(row.id - 1)}</TableCell>
-                  <TableCell align="center" >{belowStartDate(row.id)}</TableCell>
-                  <TableCell align="center">{belowEndDate(row.id)}</TableCell>
+                  <TableCell align="center" >{belowAssign(index)}</TableCell>
+                  <TableCell align="center" >{belowStartDate(index + 1)}</TableCell>
+                  <TableCell align="center">{belowEndDate(index + 1)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -100,11 +97,11 @@ const Assign = () => {
 const topAssign = () => {
     return (
       <FormControlLabel control={<Checkbox onChange={(event)=> {
-        setIsChecked(new Array(4).fill(event.currentTarget.checked))
-        setIsDisabled(new Array(5).fill(!event.target.checked))
+        setIsChecked(new Array(numUnits).fill(event.currentTarget.checked))
+        setIsDisabled(new Array(numUnits + 1).fill(!event.target.checked))
         if (!event.target.checked) {
-          setStart(new Array(5).fill(""))
-          setEnd(new Array(5).fill(""))
+          setStart(new Array(numUnits + 1).fill(""))
+          setEnd(new Array(numUnits + 1).fill(""))
         }
       }
         }/>} 
@@ -148,11 +145,11 @@ const belowAssign = (index) => {
 const topStartDate = (index) => {
   return (
    <span>
-    <label for="name">Từ: </label>
+    <label htmlFor="name">Từ: </label>
     <input type="date" style={{ minWidth: 2, border: "none" }}  disabled={isDisabled[index]}
       value={start[index]}
       onChange={(event)=> {
-        for (var i = 0; i <= 5; i++)
+        for (var i = 0; i <= numUnits + 1; i++)
           start[i] = (isDisabled[i] ? "" : event.target.value);
         setStart([...start]);
       }}
@@ -180,11 +177,11 @@ const belowStartDate = (index) => {
 const topEndDate = (index) => {
   return (
     <span>
-      <label for="name">Đến: </label>
+      <label htmlFor="name">Đến: </label>
       <input type="date" style={{ border: "none" }} disabled={isDisabled[index]}
         value={end[index]}
         onChange={(event)=> {
-          for (var i = 0; i <= 5; i++)
+          for (var i = 0; i <= numUnits + 1; i++)
             end[i] = (isDisabled[i] ? "" : event.target.value);
           setEnd([...end]);
         }}
@@ -200,6 +197,7 @@ const belowEndDate = (index) => {
   <input type="date" style={{ border: "none" }} value={end[index]}
     disabled={isDisabled[index]}
     onChange={(event) => {
+      console.log(event.target.value);
       setEnd([
         ...end.slice(0, index),
         event.target.value,
@@ -210,13 +208,36 @@ const belowEndDate = (index) => {
   );
 }
 
+function handleClick() {
+  var formData = new FormData();
   
+  const headers = {
+    'Content-Type' : 'application/json',
+    'Accept' : 'application/json',
+  };
+  for(var i = 0; i < rows.length; i++) {
+    result[i].code = rows[i].code;
+    result[i].right_of_declaration = isChecked[i];
+    result[i].startdate = start[i];
+    result[i].enddate = end[i];
+  }
+  console.log(result);
+  formData.append("List_of_objects", JSON.stringify(result));
+  axios.post('url', formData, {headers: headers})
+    .then(function (res) {
+      console.log(res);
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
 
   return (
     <div>
       <TopMenu target="Mở khai báo" role="A1"></TopMenu>
       <div id="content">
         {assignTable()}
+        <Button  sx={{bgcolor: deepOrange[500],  marginTop: 5, marginLeft: 100, color: "black", fontWeight: "bold"}} onClick={handleClick}>Lưu</Button>
       </div>
     </div>
   );

@@ -76,7 +76,6 @@ export default function PopulationSection(props) {
   };
 
   const handleDistrictClose = (event) => {
-    
     setLevel(3);
   };
 
@@ -243,6 +242,7 @@ export default function PopulationSection(props) {
   const handleClick = (event) => {
     
     setColorButton(blue[50]);
+    setLevel(1);
     setValueProvince([...[]]);
     setValueDistrict([...[]]);
     setValueWard([...[]]);
