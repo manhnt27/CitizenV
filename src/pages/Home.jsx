@@ -11,21 +11,16 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { useState, useEffect } from 'react';
-import PopulationSection from 'components/PopulationSection';
+import A1PopSection from 'components/A1PopSection';
 import SpanningTable from 'components/SpanningTable';
 import Chart from 'components/Chart';
 import TopMenu from 'components/TopMenu';
-
+import axios from 'axios';
+import { useFetch } from 'utils/UseFetch';
+import A1PopAnaysis from 'components/A1PopAnalysis';
 const Home = () => {
-  const cardView = () => {
-  return (
-    <Card sx={{width: "50%", marginTop: 5}}>
-      <CardContent>
-        <Chart></Chart>
-      </CardContent>
-    </Card>
-  );
-  }
+    const [data, setData] = useState([]);
+    
 
   return (
     <div>
@@ -36,12 +31,12 @@ const Home = () => {
           <Typography variant='h5' sx={{ fontFamily: "RobotoMedium", paddingLeft: 3}}>Dữ liệu dân số</Typography>
           </div>
         <div style={{marginTop: 10, marginLeft: 37}}>
-          {PopulationSection()}
+          <A1PopSection ></A1PopSection>
         </div>
         
         <div style={{marginTop: 70 }}>
           <Typography variant='h5' sx={{marginTop: 2, marginLeft: 5, fontFamily: "RobotoMedium"}}>Phân tích dân số</Typography>
-          {cardView()}
+          <A1PopAnaysis data={data}></A1PopAnaysis>
         </div>
 
         <div style={{marginTop: 40 }}>
