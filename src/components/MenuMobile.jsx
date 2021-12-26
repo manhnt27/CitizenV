@@ -6,7 +6,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { Link, MenuItem, Drawer } from '@mui/material';
 import { Avatar } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { deepOrange } from '@mui/material/colors';
+import { deepOrang, red } from '@mui/material/colors';
+import { Button } from '@mui/material';
 
 const headersData = [
 
@@ -52,10 +53,13 @@ const MenuMobile = (props) => {
           );
         });
       };
-
+  
+  //Call Logout function
+  function handleLogout() {}
+  
   const rightMenu = (role) => {
     return (
-      <Avatar sx={{marginLeft: "auto", marginRight: 0, bgcolor: deepOrange[500]}}>{role}</Avatar>
+      <Button sx={{marginLeft: "auto", marginRight: 0, bgcolor: red[500]}} style={{color: "black"}} onClick={handleLogout}>Đăng nhập</Button>
     );
   };
     
@@ -63,7 +67,8 @@ const MenuMobile = (props) => {
     setState({ drawerOpen: true });
   const handleDrawerClose = () =>
     setState({ drawerOpen: false });
-    
+  
+  
   return (
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: "#007bff" }}>
           <IconButton

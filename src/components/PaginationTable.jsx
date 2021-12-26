@@ -31,14 +31,15 @@ export default function PaginationTable() {
     
     const current_token = localStorage.getItem('access_token')
     let header = {"Authorization": 'Bearer ' + current_token}
-    axios.get('http://127.0.0.1:8000/api/home', {headers: header})
+    axios.get('http://127.0.0.1:8000/api/list_citizens/', {headers: header})
         .then(res => {
-            var citizenList = res.data.data;
-            for(var i = 0; i < citizenList.length; i++)
-              rows[i] = createData(citizenList[i].firstname + " " + citizenList[i].midname + " " + citizenList[i].lastname
-              , citizenList[i].age, citizenList[i].job);
-            setRows([...rows]);
-            console.log(rows);
+          var citizenList = res.data;
+          for(var i = 0; i < citizenList.length; i++)
+            rows[i] = createData(citizenList[i].firstname + " " + citizenList[i].midname + " " + citizenList[i].lastname
+            , citizenList[i].age, citizenList[i].job);
+          setRows([...rows]);
+          console.log(rows);
+         
         })
       },[])
   const handleChangePage = (event, newPage) => {
@@ -61,7 +62,7 @@ export default function PaginationTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, fontWeight: "bold" }}
                 >
                   {column.label}
                 </TableCell>

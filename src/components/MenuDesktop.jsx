@@ -15,7 +15,7 @@ import { autocompleteClasses, Avatar, FormControlLabel } from '@mui/material';
 import { Checkbox, Switch, TextField } from '@mui/material';
 import { useState } from 'react';
 import { shape } from '@mui/system';
-import { deepOrange } from '@mui/material/colors';
+import { deepOrange, red } from '@mui/material/colors';
 
 const headersData = [
 
@@ -59,9 +59,12 @@ const MenuDesktop = (props) => {
     };
   const rightMenu = (role) => {
     return (
-      <Avatar sx={{marginLeft: "auto", marginRight: 0, bgcolor: deepOrange[500]}}>{role}</Avatar>
+      <Button sx={{marginLeft: "auto", marginRight: 0, bgcolor: deepOrange[500]}} style={{color: "black"}} onClick={handleLogout}>Đăng xuất</Button>
       );
   };
+
+  //Call Logout function
+  function handleLogout() {}
 
   return (
     <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: "#007bff" }}>

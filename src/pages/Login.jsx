@@ -15,9 +15,9 @@ import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {useNavigate} from 'react-router-dom';
 import {useState} from "react";
+import axiosInstance from "./utils/axios";
+import axios from "./utils/axios";
 
-import axios from "utils/axios";
-import axiosInstance from 'utils/axios';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -55,7 +55,7 @@ export default function SignIn() {
                 localStorage.setItem('refresh_token', res.data.refresh);
                 axiosInstance.defaults.headers['Authorization'] =
                     'JWT ' + localStorage.getItem('access_token');
-                
+                navigate('/home')
             })
             .catch(function (error) {
                 console.log(error)
@@ -114,7 +114,6 @@ export default function SignIn() {
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
-                            href="/home"
 
                         >
                             Đăng nhập

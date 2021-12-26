@@ -70,6 +70,11 @@ const CreateAccount = () => {
                 //console.log(rows);
                 setRows([...rows]);
                 setResult([...result]);
+                console.log(res.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+                alert('Người dùng không được cấp quyền với chức năng này')
             })
 
 
@@ -141,6 +146,7 @@ const CreateAccount = () => {
             })
             .catch(function (error) {
                 console.log(error)
+                alert('Người dùng không được cấp quyền với chức năng này')
 
             })
 

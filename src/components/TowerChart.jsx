@@ -6,32 +6,50 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Responsive from "@amcharts/amcharts5/themes/Responsive";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-const Chart = (props) => {
+const TowerChart = (props) => {
   const [data, setData] = useState([]);
   
   useLayoutEffect(() => {
-   /**
- * ---------------------------------------
- * This demo was created using amCharts 5.
- * 
- * For more information visit:
- * https://www.amcharts.com/
- * 
- * Documentation is available at:
- * https://www.amcharts.com/docs/v5/
- * ---------------------------------------
- */
-
-// ===========================================================
-// Data
-// ===========================================================
-var root = am5.Root.new("chartdiv");
-const current_token = localStorage.getItem('access_token')
+ 
+    var root = am5.Root.new("chartdiv");
+    const current_token = localStorage.getItem('access_token')
     let header = {"Authorization": 'Bearer ' + current_token}
     axios.get('http://127.0.0.1:8000/api/home', {headers: header})
         .then(res => {
-            console.log(res.data);
-            var usData = res.data.towerchart;
+            var popData =  [{
+              "age": "Từ 0 đến 10",
+              "male": res.data.towerchart[0].male,
+              "female": res.data.towerchart[0].female
+            }, {
+              "age": "Từ 10 đến 20",
+              "male": res.data.towerchart[1].male,
+              "female": res.data.towerchart[1].female
+            },  {
+              "age": "Từ 20 đến 30",
+              "male": res.data.towerchart[2].male,
+              "female": res.data.towerchart[2].female
+            },  {
+              "age": "Từ 30 đến 40",
+              "male": res.data.towerchart[3].male,
+              "female": res.data.towerchart[3].female
+            },  {
+              "age": "Từ 40 đến 50",
+              "male": res.data.towerchart[4].male,
+              "female": res.data.towerchart[4].female
+            }, {
+              "age": "Từ 50 đến 60",
+              "male": res.data.towerchart[5].male,
+              "female": res.data.towerchart[5].female
+            }, {
+              "age": "Từ 60 đến 70",
+              "male": res.data.towerchart[6].male,
+              "female": res.data.towerchart[6].female
+            }, {
+              "age": "Trên 70",
+              "male": res.data.towerchart[7].male,
+              "female": res.data.towerchart[7].female
+            },
+          ];
             
             
             
@@ -55,7 +73,7 @@ const current_token = localStorage.getItem('access_token')
               return list;
             }
             
-            usData = aggregateData(usData);
+            popData = aggregateData(popData);
             
             
             // ===========================================================
@@ -106,7 +124,7 @@ const current_token = localStorage.getItem('access_token')
               renderer: am5xy.AxisRendererY.new(root, {})
             }));
             yAxis1.get("renderer").labels.template.set("fontSize", 12);
-            yAxis1.data.setAll(usData);
+            yAxis1.data.setAll(popData);
             
             var yAxis2 = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
               categoryField: "age",
@@ -115,11 +133,11 @@ const current_token = localStorage.getItem('access_token')
               })
             }));
             yAxis2.get("renderer").labels.template.set("fontSize", 12);
-            yAxis2.data.setAll(usData);
+            yAxis2.data.setAll(popData);
             
             var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
-              min: -10,
-              max: 10,
+              min: -20,
+              max: 20,
               numberFormat: "#.s'%'",
               renderer: am5xy.AxisRendererX.new(root, {
                 minGridDistance: 40
@@ -138,11 +156,11 @@ const current_token = localStorage.getItem('access_token')
             
             
             maleSeries.columns.template.setAll({
-              tooltipText: "Males, age {categoryY}: {male} ({malePercent.formatNumber('#.0s')}%)",
+              tooltipText: "Nam, tuổi {categoryY}: {male} ({malePercent.formatNumber('#.0s')}%)",
               tooltipX: am5.p100
             });
             
-            maleSeries.data.setAll(usData);
+            maleSeries.data.setAll(popData);
             
             var femaleSeries = chart.series.push(am5xy.ColumnSeries.new(root, {
               name: "Males",
@@ -154,15 +172,15 @@ const current_token = localStorage.getItem('access_token')
             }));
             
             femaleSeries.columns.template.setAll({
-              tooltipText: "Males, age {categoryY}: {female} ({femalePercent.formatNumber('#.0s')}%)",
+              tooltipText: "Nữ, tuổi {categoryY}: {female} ({femalePercent.formatNumber('#.0s')}%)",
               tooltipX: am5.p100
             });
             
-            femaleSeries.data.setAll(usData);
+            femaleSeries.data.setAll(popData);
             
             // Add labels
             var maleLabel = chart.plotContainer.children.push(am5.Label.new(root, {
-              text: "Males",
+              text: "Nam",
               fontSize: 20,
               y: 5,
               x: 5,
@@ -175,7 +193,7 @@ const current_token = localStorage.getItem('access_token')
             }));
             
             var femaleLabel = chart.plotContainer.children.push(am5.Label.new(root, {
-              text: "Females",
+              text: "Nữ",
               fontSize: 20,
               y: 5,
               x: am5.p100,
@@ -205,7 +223,7 @@ return () => {
   }, []);
 
   return (
-    <div id="chartdiv" style={{ width: "100%", height: "400px" }}></div>
+    <div id="chartdiv" style={{ width: "100%", height: "450px", marginTop: 3  }}></div>
   );
 }
-export default Chart;
+export default TowerChart;

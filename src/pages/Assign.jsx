@@ -56,6 +56,10 @@ const Assign = () => {
                 //console.log(rows);
                 setRows([...rows]);
             })
+            .catch(function (error) {
+                console.log(error)
+                alert('Người dùng không được cấp quyền cho chức năng này')
+            })
 
 
     }, [numUnits]);
@@ -236,6 +240,7 @@ const Assign = () => {
             })
             .catch(function (error) {
                 console.log(error.data)
+                alert('Người dùng không được cấp quyền với chức năng này')
             })
     }
 
